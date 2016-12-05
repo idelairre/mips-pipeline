@@ -76,8 +76,8 @@ class Control {
   }
 
   private static void setSw() {
-    // signals.remove("regDst");
-    // signals.remove("memToReg");
+    signals.put("regDst", -1);
+    signals.put("memToReg", -1);
     signals.put("ALUSrc", 1);
     signals.put("regWrite", 0);
     signals.put("memRead", 0);
@@ -87,8 +87,8 @@ class Control {
   }
 
   private static void setBeq() {
-    // signals.remove("regDst");
-    // signals.remove("memToReg");
+    signals.put("regDst", -1);
+    signals.put("memToReg", -1);
     signals.put("ALUSrc", 0);
     signals.put("regWrite", 0);
     signals.put("memRead", 0);

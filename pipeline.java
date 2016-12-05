@@ -1,3 +1,4 @@
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.Map;
@@ -13,7 +14,7 @@ class Global {
   public static int[] Regs = new int[32];
   public static final Map<Integer, Integer> instructions;
 
-  public static boolean test = true;
+  public static boolean test = false;
 
   static {
     Map<Integer, Integer> tempMap = new LinkedHashMap<Integer, Integer>();
@@ -23,12 +24,6 @@ class Global {
       tempMap.put(0x7A008, 0xad09fffc);
       tempMap.put(0x7A00C, 0x00625022);
       tempMap.put(0x7A010, 0x10c8fffb);
-      // tempMap.put(0x7A014, 0x00000000);
-      // tempMap.put(0x7A018, 0x00000000);
-      // tempMap.put(0x7A01C, 0x00000000);
-      // tempMap.put(0x7A020, 0x00000000);
-      // tempMap.put(0x7A024, 0x00000000);
-      // tempMap.put(0x7A028, 0x00000000);
     } else {
       tempMap.put(0x7A000, 0xa1020000);
       tempMap.put(0x7A004, 0x810AFFFC);
@@ -72,6 +67,9 @@ class Global {
 
 class Pipeline {
   private int signExtend;
+  public static boolean running = false;
+  public boolean writePending = false;
+  public boolean readPending = false;
 
   public Pipeline IF_stage() {
     IFID.write.put("instruction", Global.instructions.get(Global.pc));
@@ -82,6 +80,7 @@ class Pipeline {
 
   public Pipeline ID_stage() {
 
+    System.out.println("\n@ID Stage");
     this.printEverything();
 
     IFID.read.putAll(IFID.write);
@@ -142,6 +141,7 @@ class Pipeline {
     // and either Read data 2 or a sign-extended immediate
     // for the ALU
 
+    System.out.println("\n@EX Stage");
     this.printEverything();
 
     IDEX.read.putAll(IDEX.write);
@@ -179,15 +179,29 @@ class Pipeline {
     EXMEM.WB = new HashMap<String, Integer>(IDEX.WB);
     EXMEM.M = new HashMap<String, Integer>(IDEX.M);
 
-    this.ID_stage();
+
+    if (this.writePending) {
+      this.WB_stage();
+    } else {
+      this.MEM_stage();
+    }
+
+    this.readPending = true;
+
+    // if (!this.readPending) {
+      this.ID_stage();
+    // }
 
     return this;
   }
 
   public Pipeline MEM_stage() {
+    System.out.println("\n@MEM Stage");
     this.printEverything();
 
     EXMEM.read.putAll(EXMEM.write);
+
+    this.readPending = false;
 
     MEMWB.WB = new HashMap<String, Integer>(EXMEM.WB);
 
@@ -210,6 +224,8 @@ class Pipeline {
       }
     }
 
+    this.writePending = true;
+
     this.EX_stage();
 
     return this;
@@ -218,7 +234,7 @@ class Pipeline {
   public Pipeline WB_stage() {
     // places the ALU result back into the register file in the middle of the datapath
     // OR, read the data from the mem/wb pipeline register and writing it into the register file
-
+    System.out.println("\n@WB Stage");
     this.printEverything();
 
     MEMWB.read.putAll(MEMWB.write);
@@ -242,11 +258,16 @@ class Pipeline {
       }
       // the register on the write register input is written with the value on the write data input
       if (!Global.test) {
+        System.out.println("Writing " + Integer.toHexString(MEMWB.read.get("ALUResult")) + " to register " + MEMWB.read.get("writeRegNum"));
         Global.Regs[MEMWB.read.get("writeRegNum")] = Registers.writeData;
       }
     }
 
-    this.MEM_stage();
+    if (!writePending) {
+      this.MEM_stage();
+    }
+
+    this.writePending = false;
 
     return this;
   }
@@ -254,12 +275,15 @@ class Pipeline {
   public Pipeline copyWriteToRead() {
     this.WB_stage();
 
+    this.running = false;
+
     // not sure what is supposed to go here
 
     return this;
   }
 
   public void run() {
+    this.running = true;
     IF_stage().ID_stage().EX_stage().MEM_stage().WB_stage().copyWriteToRead();
   }
 
@@ -278,14 +302,22 @@ class Pipeline {
     System.out.println("Controls: " + MEMWB.controls());
     System.out.println("MEM/WB Read: " + RegisterService.toString(MEMWB.read));
     System.out.println("Controls: " + MEMWB.controls());
+
+    System.out.println(Arrays.toString(Global.Regs));
+    System.out.println(Arrays.toString(Global.Main_Memory));
+
     return this;
   }
 
   public static void main(String[] args) {
     Pipeline pipeline = new Pipeline();
     while (Global.instructions.get(Global.pc) != null) {
-      pipeline.run();
+      // System.out.println(Disassembler.decode(Global.instructions.get(Global.pc)));
+      // Global.pc += 4;
+      if (!Pipeline.running) {
+        pipeline.run();
+      }
     }
-    pipeline.printEverything();
+    // pipeline.printEverything();
   }
 }
