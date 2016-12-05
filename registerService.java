@@ -20,7 +20,8 @@ class RegisterService {
       entry.getKey().equals("instruction") ||
       entry.getKey().equals("SWValue") ||
       entry.getKey().equals("seOffset") ||
-      entry.getKey().equals("ALUResult")) {
+      entry.getKey().equals("ALUResult") ||
+      entry.getKey().equals("LWDataValue")) {
         sb.append(Integer.toHexString(entry.getValue()));
       } else {
         sb.append(entry.getValue());

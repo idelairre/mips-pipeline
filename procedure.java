@@ -17,7 +17,9 @@ abstract class Procedure {
   static {
     Map<Integer, String> tempMap = new HashMap<Integer, String>();
     tempMap.put(0x23, "lw");
+    tempMap.put(0x20, "lb");
     tempMap.put(0x2B, "sw");
+    tempMap.put(0x28, "sb");
     tempMap.put(0x04, "beq");
     tempMap.put(0x05, "bne");
     opCodes = Collections.unmodifiableMap(tempMap);
@@ -27,6 +29,7 @@ abstract class Procedure {
 
   static {
     Map<Integer, String> tempMap = new HashMap<Integer, String>();
+    tempMap.put(0, "nop");
     tempMap.put(0x20, "add");
     tempMap.put(0x22, "sub");
     tempMap.put(0x24, "and");

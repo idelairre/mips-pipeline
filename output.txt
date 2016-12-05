@@ -1,0 +1,406 @@
+
+IF/ID Write: {instruction=a1020000, incrPC=7a004}
+IF/ID Read: {instruction=0, incrPC=0}
+ID/EX Write: {writeReg_15_11=0, function=0, readReg2Value=0, readReg1Value=0, seOffset=0, writeReg_20_16=0, incrPC=0}
+Controls: {regDst=-1, regWrite=-1, ALUSrc=-1, ALUOp=-1, memRead=-1, branch=-1, memToReg=-1, memWrite=-1}
+ID/EX Read: {writeReg_15_11=0, function=0, readReg2Value=0, readReg1Value=0, seOffset=0, writeReg_20_16=0, incrPC=0}
+EX/MEM Write: {zero=0, ALUResult=0, calcBTA=0, writeRegNum=0}
+Controls: {}
+EX/MEM Read: {zero=0, ALUResult=0, calcBTA=0, writeRegNum=0}
+Controls: {}
+MEM/WB Write: {LWDataValue=0, ALUResult=0, writeRegNum=0}
+Controls: {}
+MEM/WB Read: {LWDataValue=0, ALUResult=0, writeRegNum=0}
+Controls: {}
+
+IF/ID Write: {instruction=810afffc, incrPC=7a008}
+IF/ID Read: {instruction=a1020000, incrPC=7a004}
+ID/EX Write: {writeReg_15_11=0, function=0, readReg2Value=102, readReg1Value=108, seOffset=0, writeReg_20_16=2, incrPC=7a004}
+Controls: {regDst=-1, regWrite=0, ALUSrc=1, ALUOp=0, memRead=0, branch=0, memToReg=-1, memWrite=1}
+ID/EX Read: {writeReg_15_11=0, function=0, readReg2Value=0, readReg1Value=0, seOffset=0, writeReg_20_16=0, incrPC=0}
+EX/MEM Write: {zero=0, ALUResult=0, calcBTA=0, writeRegNum=0}
+Controls: {}
+EX/MEM Read: {zero=0, ALUResult=0, calcBTA=0, writeRegNum=0}
+Controls: {}
+MEM/WB Write: {LWDataValue=0, ALUResult=0, writeRegNum=0}
+Controls: {}
+MEM/WB Read: {LWDataValue=0, ALUResult=0, writeRegNum=0}
+Controls: {}
+
+IF/ID Write: {instruction=810afffc, incrPC=7a008}
+IF/ID Read: {instruction=a1020000, incrPC=7a004}
+ID/EX Write: {writeReg_15_11=0, function=0, readReg2Value=102, readReg1Value=108, seOffset=0, writeReg_20_16=2, incrPC=7a004}
+Controls: {regDst=-1, regWrite=0, ALUSrc=1, ALUOp=0, memRead=0, branch=0, memToReg=-1, memWrite=1}
+ID/EX Read: {writeReg_15_11=0, function=0, readReg2Value=102, readReg1Value=108, seOffset=0, writeReg_20_16=2, incrPC=7a004}
+EX/MEM Write: {zero=0, SWValue=102, ALUResult=108, calcBTA=0, writeRegNum=0}
+Controls: {memRead=0, memToReg=-1, branch=0, regWrite=0, memWrite=1}
+EX/MEM Read: {zero=0, ALUResult=0, calcBTA=0, writeRegNum=0}
+Controls: {memRead=0, memToReg=-1, branch=0, regWrite=0, memWrite=1}
+MEM/WB Write: {LWDataValue=0, ALUResult=0, writeRegNum=0}
+Controls: {}
+MEM/WB Read: {LWDataValue=0, ALUResult=0, writeRegNum=0}
+Controls: {}
+
+IF/ID Write: {instruction=831820, incrPC=7a00c}
+IF/ID Read: {instruction=810afffc, incrPC=7a008}
+ID/EX Write: {writeReg_15_11=31, function=3c, readReg2Value=10a, readReg1Value=108, seOffset=fffffffc, writeReg_20_16=10, incrPC=7a008}
+Controls: {regDst=0, regWrite=1, ALUSrc=1, ALUOp=0, memRead=1, branch=0, memToReg=1, memWrite=0}
+ID/EX Read: {writeReg_15_11=0, function=0, readReg2Value=102, readReg1Value=108, seOffset=0, writeReg_20_16=2, incrPC=7a004}
+EX/MEM Write: {zero=0, SWValue=102, ALUResult=108, calcBTA=0, writeRegNum=0}
+Controls: {memRead=0, memToReg=-1, branch=0, regWrite=0, memWrite=1}
+EX/MEM Read: {zero=0, ALUResult=0, calcBTA=0, writeRegNum=0}
+Controls: {memRead=0, memToReg=-1, branch=0, regWrite=0, memWrite=1}
+MEM/WB Write: {LWDataValue=0, ALUResult=0, writeRegNum=0}
+Controls: {}
+MEM/WB Read: {LWDataValue=0, ALUResult=0, writeRegNum=0}
+Controls: {}
+
+IF/ID Write: {instruction=831820, incrPC=7a00c}
+IF/ID Read: {instruction=810afffc, incrPC=7a008}
+ID/EX Write: {writeReg_15_11=31, function=3c, readReg2Value=10a, readReg1Value=108, seOffset=fffffffc, writeReg_20_16=10, incrPC=7a008}
+Controls: {regDst=0, regWrite=1, ALUSrc=1, ALUOp=0, memRead=1, branch=0, memToReg=1, memWrite=0}
+ID/EX Read: {writeReg_15_11=0, function=0, readReg2Value=102, readReg1Value=108, seOffset=0, writeReg_20_16=2, incrPC=7a004}
+EX/MEM Write: {zero=0, SWValue=102, ALUResult=108, calcBTA=0, writeRegNum=0}
+Controls: {memRead=0, memToReg=-1, branch=0, regWrite=0, memWrite=1}
+EX/MEM Read: {zero=0, SWValue=102, ALUResult=108, calcBTA=0, writeRegNum=0}
+Controls: {memRead=0, memToReg=-1, branch=0, regWrite=0, memWrite=1}
+MEM/WB Write: {LWDataValue=0, ALUResult=108, writeRegNum=0}
+Controls: {memToReg=-1, regWrite=0}
+MEM/WB Read: {LWDataValue=0, ALUResult=0, writeRegNum=0}
+Controls: {memToReg=-1, regWrite=0}
+
+IF/ID Write: {instruction=831820, incrPC=7a00c}
+IF/ID Read: {instruction=810afffc, incrPC=7a008}
+ID/EX Write: {writeReg_15_11=31, function=3c, readReg2Value=10a, readReg1Value=108, seOffset=fffffffc, writeReg_20_16=10, incrPC=7a008}
+Controls: {regDst=0, regWrite=1, ALUSrc=1, ALUOp=0, memRead=1, branch=0, memToReg=1, memWrite=0}
+ID/EX Read: {writeReg_15_11=31, function=3c, readReg2Value=10a, readReg1Value=108, seOffset=fffffffc, writeReg_20_16=10, incrPC=7a008}
+EX/MEM Write: {zero=0, SWValue=10a, ALUResult=104, calcBTA=0, writeRegNum=10}
+Controls: {memRead=1, memToReg=1, branch=0, regWrite=1, memWrite=0}
+EX/MEM Read: {zero=0, SWValue=102, ALUResult=108, calcBTA=0, writeRegNum=0}
+Controls: {memRead=1, memToReg=1, branch=0, regWrite=1, memWrite=0}
+MEM/WB Write: {LWDataValue=0, ALUResult=108, writeRegNum=0}
+Controls: {memToReg=-1, regWrite=0}
+MEM/WB Read: {LWDataValue=0, ALUResult=0, writeRegNum=0}
+Controls: {memToReg=-1, regWrite=0}
+
+IF/ID Write: {instruction=1263820, incrPC=7a010}
+IF/ID Read: {instruction=831820, incrPC=7a00c}
+ID/EX Write: {writeReg_15_11=3, function=20, readReg2Value=103, readReg1Value=104, seOffset=1820, writeReg_20_16=3, incrPC=7a00c}
+Controls: {regDst=1, regWrite=1, ALUSrc=0, ALUOp=2, memRead=0, branch=0, memToReg=0, memWrite=0}
+ID/EX Read: {writeReg_15_11=31, function=3c, readReg2Value=10a, readReg1Value=108, seOffset=fffffffc, writeReg_20_16=10, incrPC=7a008}
+EX/MEM Write: {zero=0, SWValue=10a, ALUResult=104, calcBTA=0, writeRegNum=10}
+Controls: {memRead=1, memToReg=1, branch=0, regWrite=1, memWrite=0}
+EX/MEM Read: {zero=0, SWValue=102, ALUResult=108, calcBTA=0, writeRegNum=0}
+Controls: {memRead=1, memToReg=1, branch=0, regWrite=1, memWrite=0}
+MEM/WB Write: {LWDataValue=0, ALUResult=108, writeRegNum=0}
+Controls: {memToReg=-1, regWrite=0}
+MEM/WB Read: {LWDataValue=0, ALUResult=0, writeRegNum=0}
+Controls: {memToReg=-1, regWrite=0}
+
+IF/ID Write: {instruction=1263820, incrPC=7a010}
+IF/ID Read: {instruction=831820, incrPC=7a00c}
+ID/EX Write: {writeReg_15_11=3, function=20, readReg2Value=103, readReg1Value=104, seOffset=1820, writeReg_20_16=3, incrPC=7a00c}
+Controls: {regDst=1, regWrite=1, ALUSrc=0, ALUOp=2, memRead=0, branch=0, memToReg=0, memWrite=0}
+ID/EX Read: {writeReg_15_11=31, function=3c, readReg2Value=10a, readReg1Value=108, seOffset=fffffffc, writeReg_20_16=10, incrPC=7a008}
+EX/MEM Write: {zero=0, SWValue=10a, ALUResult=104, calcBTA=0, writeRegNum=10}
+Controls: {memRead=1, memToReg=1, branch=0, regWrite=1, memWrite=0}
+EX/MEM Read: {zero=0, SWValue=102, ALUResult=108, calcBTA=0, writeRegNum=0}
+Controls: {memRead=1, memToReg=1, branch=0, regWrite=1, memWrite=0}
+MEM/WB Write: {LWDataValue=0, ALUResult=108, writeRegNum=0}
+Controls: {memToReg=-1, regWrite=0}
+MEM/WB Read: {LWDataValue=0, ALUResult=108, writeRegNum=0}
+Controls: {memToReg=-1, regWrite=0}
+
+IF/ID Write: {instruction=1263820, incrPC=7a010}
+IF/ID Read: {instruction=831820, incrPC=7a00c}
+ID/EX Write: {writeReg_15_11=3, function=20, readReg2Value=103, readReg1Value=104, seOffset=1820, writeReg_20_16=3, incrPC=7a00c}
+Controls: {regDst=1, regWrite=1, ALUSrc=0, ALUOp=2, memRead=0, branch=0, memToReg=0, memWrite=0}
+ID/EX Read: {writeReg_15_11=31, function=3c, readReg2Value=10a, readReg1Value=108, seOffset=fffffffc, writeReg_20_16=10, incrPC=7a008}
+EX/MEM Write: {zero=0, SWValue=10a, ALUResult=104, calcBTA=0, writeRegNum=10}
+Controls: {memRead=1, memToReg=1, branch=0, regWrite=1, memWrite=0}
+EX/MEM Read: {zero=0, SWValue=10a, ALUResult=104, calcBTA=0, writeRegNum=10}
+Controls: {memRead=1, memToReg=1, branch=0, regWrite=1, memWrite=0}
+MEM/WB Write: {LWDataValue=4, ALUResult=104, writeRegNum=10}
+Controls: {memToReg=1, regWrite=1}
+MEM/WB Read: {LWDataValue=0, ALUResult=108, writeRegNum=0}
+Controls: {memToReg=1, regWrite=1}
+
+IF/ID Write: {instruction=1263820, incrPC=7a010}
+IF/ID Read: {instruction=831820, incrPC=7a00c}
+ID/EX Write: {writeReg_15_11=3, function=20, readReg2Value=103, readReg1Value=104, seOffset=1820, writeReg_20_16=3, incrPC=7a00c}
+Controls: {regDst=1, regWrite=1, ALUSrc=0, ALUOp=2, memRead=0, branch=0, memToReg=0, memWrite=0}
+ID/EX Read: {writeReg_15_11=3, function=20, readReg2Value=103, readReg1Value=104, seOffset=1820, writeReg_20_16=3, incrPC=7a00c}
+EX/MEM Write: {zero=0, SWValue=103, ALUResult=207, calcBTA=0, writeRegNum=3}
+Controls: {memRead=0, memToReg=0, branch=0, regWrite=1, memWrite=0}
+EX/MEM Read: {zero=0, SWValue=10a, ALUResult=104, calcBTA=0, writeRegNum=10}
+Controls: {memRead=0, memToReg=0, branch=0, regWrite=1, memWrite=0}
+MEM/WB Write: {LWDataValue=4, ALUResult=104, writeRegNum=10}
+Controls: {memToReg=1, regWrite=1}
+MEM/WB Read: {LWDataValue=0, ALUResult=108, writeRegNum=0}
+Controls: {memToReg=1, regWrite=1}
+
+IF/ID Write: {instruction=1224820, incrPC=7a014}
+IF/ID Read: {instruction=1263820, incrPC=7a010}
+ID/EX Write: {writeReg_15_11=7, function=20, readReg2Value=106, readReg1Value=109, seOffset=3820, writeReg_20_16=6, incrPC=7a010}
+Controls: {regDst=1, regWrite=1, ALUSrc=0, ALUOp=2, memRead=0, branch=0, memToReg=0, memWrite=0}
+ID/EX Read: {writeReg_15_11=3, function=20, readReg2Value=103, readReg1Value=104, seOffset=1820, writeReg_20_16=3, incrPC=7a00c}
+EX/MEM Write: {zero=0, SWValue=103, ALUResult=207, calcBTA=0, writeRegNum=3}
+Controls: {memRead=0, memToReg=0, branch=0, regWrite=1, memWrite=0}
+EX/MEM Read: {zero=0, SWValue=10a, ALUResult=104, calcBTA=0, writeRegNum=10}
+Controls: {memRead=0, memToReg=0, branch=0, regWrite=1, memWrite=0}
+MEM/WB Write: {LWDataValue=4, ALUResult=104, writeRegNum=10}
+Controls: {memToReg=1, regWrite=1}
+MEM/WB Read: {LWDataValue=0, ALUResult=108, writeRegNum=0}
+Controls: {memToReg=1, regWrite=1}
+
+IF/ID Write: {instruction=1224820, incrPC=7a014}
+IF/ID Read: {instruction=1263820, incrPC=7a010}
+ID/EX Write: {writeReg_15_11=7, function=20, readReg2Value=106, readReg1Value=109, seOffset=3820, writeReg_20_16=6, incrPC=7a010}
+Controls: {regDst=1, regWrite=1, ALUSrc=0, ALUOp=2, memRead=0, branch=0, memToReg=0, memWrite=0}
+ID/EX Read: {writeReg_15_11=3, function=20, readReg2Value=103, readReg1Value=104, seOffset=1820, writeReg_20_16=3, incrPC=7a00c}
+EX/MEM Write: {zero=0, SWValue=103, ALUResult=207, calcBTA=0, writeRegNum=3}
+Controls: {memRead=0, memToReg=0, branch=0, regWrite=1, memWrite=0}
+EX/MEM Read: {zero=0, SWValue=10a, ALUResult=104, calcBTA=0, writeRegNum=10}
+Controls: {memRead=0, memToReg=0, branch=0, regWrite=1, memWrite=0}
+MEM/WB Write: {LWDataValue=4, ALUResult=104, writeRegNum=10}
+Controls: {memToReg=1, regWrite=1}
+MEM/WB Read: {LWDataValue=4, ALUResult=104, writeRegNum=10}
+Controls: {memToReg=1, regWrite=1}
+
+IF/ID Write: {instruction=1224820, incrPC=7a014}
+IF/ID Read: {instruction=1263820, incrPC=7a010}
+ID/EX Write: {writeReg_15_11=7, function=20, readReg2Value=106, readReg1Value=109, seOffset=3820, writeReg_20_16=6, incrPC=7a010}
+Controls: {regDst=1, regWrite=1, ALUSrc=0, ALUOp=2, memRead=0, branch=0, memToReg=0, memWrite=0}
+ID/EX Read: {writeReg_15_11=3, function=20, readReg2Value=103, readReg1Value=104, seOffset=1820, writeReg_20_16=3, incrPC=7a00c}
+EX/MEM Write: {zero=0, SWValue=103, ALUResult=207, calcBTA=0, writeRegNum=3}
+Controls: {memRead=0, memToReg=0, branch=0, regWrite=1, memWrite=0}
+EX/MEM Read: {zero=0, SWValue=103, ALUResult=207, calcBTA=0, writeRegNum=3}
+Controls: {memRead=0, memToReg=0, branch=0, regWrite=1, memWrite=0}
+MEM/WB Write: {LWDataValue=4, ALUResult=207, writeRegNum=3}
+Controls: {memToReg=0, regWrite=1}
+MEM/WB Read: {LWDataValue=4, ALUResult=104, writeRegNum=10}
+Controls: {memToReg=0, regWrite=1}
+
+IF/ID Write: {instruction=1224820, incrPC=7a014}
+IF/ID Read: {instruction=1263820, incrPC=7a010}
+ID/EX Write: {writeReg_15_11=7, function=20, readReg2Value=106, readReg1Value=109, seOffset=3820, writeReg_20_16=6, incrPC=7a010}
+Controls: {regDst=1, regWrite=1, ALUSrc=0, ALUOp=2, memRead=0, branch=0, memToReg=0, memWrite=0}
+ID/EX Read: {writeReg_15_11=7, function=20, readReg2Value=106, readReg1Value=109, seOffset=3820, writeReg_20_16=6, incrPC=7a010}
+EX/MEM Write: {zero=0, SWValue=106, ALUResult=20f, calcBTA=0, writeRegNum=7}
+Controls: {memRead=0, memToReg=0, branch=0, regWrite=1, memWrite=0}
+EX/MEM Read: {zero=0, SWValue=103, ALUResult=207, calcBTA=0, writeRegNum=3}
+Controls: {memRead=0, memToReg=0, branch=0, regWrite=1, memWrite=0}
+MEM/WB Write: {LWDataValue=4, ALUResult=207, writeRegNum=3}
+Controls: {memToReg=0, regWrite=1}
+MEM/WB Read: {LWDataValue=4, ALUResult=104, writeRegNum=10}
+Controls: {memToReg=0, regWrite=1}
+
+IF/ID Write: {instruction=81510010, incrPC=7a01c}
+IF/ID Read: {instruction=1224820, incrPC=7a014}
+ID/EX Write: {writeReg_15_11=9, function=20, readReg2Value=102, readReg1Value=109, seOffset=4820, writeReg_20_16=2, incrPC=7a014}
+Controls: {regDst=1, regWrite=1, ALUSrc=0, ALUOp=2, memRead=0, branch=0, memToReg=0, memWrite=0}
+ID/EX Read: {writeReg_15_11=7, function=20, readReg2Value=106, readReg1Value=109, seOffset=3820, writeReg_20_16=6, incrPC=7a010}
+EX/MEM Write: {zero=0, SWValue=106, ALUResult=20f, calcBTA=0, writeRegNum=7}
+Controls: {memRead=0, memToReg=0, branch=0, regWrite=1, memWrite=0}
+EX/MEM Read: {zero=0, SWValue=103, ALUResult=207, calcBTA=0, writeRegNum=3}
+Controls: {memRead=0, memToReg=0, branch=0, regWrite=1, memWrite=0}
+MEM/WB Write: {LWDataValue=4, ALUResult=207, writeRegNum=3}
+Controls: {memToReg=0, regWrite=1}
+MEM/WB Read: {LWDataValue=4, ALUResult=104, writeRegNum=10}
+Controls: {memToReg=0, regWrite=1}
+
+IF/ID Write: {instruction=624022, incrPC=7a020}
+IF/ID Read: {instruction=81510010, incrPC=7a01c}
+ID/EX Write: {writeReg_15_11=0, function=10, readReg2Value=111, readReg1Value=4, seOffset=10, writeReg_20_16=17, incrPC=7a01c}
+Controls: {regDst=0, regWrite=1, ALUSrc=1, ALUOp=0, memRead=1, branch=0, memToReg=1, memWrite=0}
+ID/EX Read: {writeReg_15_11=7, function=20, readReg2Value=106, readReg1Value=109, seOffset=3820, writeReg_20_16=6, incrPC=7a010}
+EX/MEM Write: {zero=0, SWValue=106, ALUResult=20f, calcBTA=0, writeRegNum=7}
+Controls: {memRead=0, memToReg=0, branch=0, regWrite=1, memWrite=0}
+EX/MEM Read: {zero=0, SWValue=103, ALUResult=207, calcBTA=0, writeRegNum=3}
+Controls: {memRead=0, memToReg=0, branch=0, regWrite=1, memWrite=0}
+MEM/WB Write: {LWDataValue=4, ALUResult=207, writeRegNum=3}
+Controls: {memToReg=0, regWrite=1}
+MEM/WB Read: {LWDataValue=4, ALUResult=104, writeRegNum=10}
+Controls: {memToReg=0, regWrite=1}
+
+IF/ID Write: {instruction=624022, incrPC=7a020}
+IF/ID Read: {instruction=81510010, incrPC=7a01c}
+ID/EX Write: {writeReg_15_11=0, function=10, readReg2Value=111, readReg1Value=4, seOffset=10, writeReg_20_16=17, incrPC=7a01c}
+Controls: {regDst=0, regWrite=1, ALUSrc=1, ALUOp=0, memRead=1, branch=0, memToReg=1, memWrite=0}
+ID/EX Read: {writeReg_15_11=0, function=10, readReg2Value=111, readReg1Value=4, seOffset=10, writeReg_20_16=17, incrPC=7a01c}
+EX/MEM Write: {zero=0, SWValue=111, ALUResult=14, calcBTA=0, writeRegNum=17}
+Controls: {memRead=1, memToReg=1, branch=0, regWrite=1, memWrite=0}
+EX/MEM Read: {zero=0, SWValue=103, ALUResult=207, calcBTA=0, writeRegNum=3}
+Controls: {memRead=1, memToReg=1, branch=0, regWrite=1, memWrite=0}
+MEM/WB Write: {LWDataValue=4, ALUResult=207, writeRegNum=3}
+Controls: {memToReg=0, regWrite=1}
+MEM/WB Read: {LWDataValue=4, ALUResult=104, writeRegNum=10}
+Controls: {memToReg=0, regWrite=1}
+
+IF/ID Write: {instruction=0, incrPC=7a024}
+IF/ID Read: {instruction=624022, incrPC=7a020}
+ID/EX Write: {writeReg_15_11=8, function=22, readReg2Value=102, readReg1Value=103, seOffset=4022, writeReg_20_16=2, incrPC=7a020}
+Controls: {regDst=1, regWrite=1, ALUSrc=0, ALUOp=2, memRead=0, branch=0, memToReg=0, memWrite=0}
+ID/EX Read: {writeReg_15_11=0, function=10, readReg2Value=111, readReg1Value=4, seOffset=10, writeReg_20_16=17, incrPC=7a01c}
+EX/MEM Write: {zero=0, SWValue=111, ALUResult=14, calcBTA=0, writeRegNum=17}
+Controls: {memRead=1, memToReg=1, branch=0, regWrite=1, memWrite=0}
+EX/MEM Read: {zero=0, SWValue=103, ALUResult=207, calcBTA=0, writeRegNum=3}
+Controls: {memRead=1, memToReg=1, branch=0, regWrite=1, memWrite=0}
+MEM/WB Write: {LWDataValue=4, ALUResult=207, writeRegNum=3}
+Controls: {memToReg=0, regWrite=1}
+MEM/WB Read: {LWDataValue=4, ALUResult=104, writeRegNum=10}
+Controls: {memToReg=0, regWrite=1}
+
+IF/ID Write: {instruction=0, incrPC=7a024}
+IF/ID Read: {instruction=624022, incrPC=7a020}
+ID/EX Write: {writeReg_15_11=8, function=22, readReg2Value=102, readReg1Value=103, seOffset=4022, writeReg_20_16=2, incrPC=7a020}
+Controls: {regDst=1, regWrite=1, ALUSrc=0, ALUOp=2, memRead=0, branch=0, memToReg=0, memWrite=0}
+ID/EX Read: {writeReg_15_11=0, function=10, readReg2Value=111, readReg1Value=4, seOffset=10, writeReg_20_16=17, incrPC=7a01c}
+EX/MEM Write: {zero=0, SWValue=111, ALUResult=14, calcBTA=0, writeRegNum=17}
+Controls: {memRead=1, memToReg=1, branch=0, regWrite=1, memWrite=0}
+EX/MEM Read: {zero=0, SWValue=111, ALUResult=14, calcBTA=0, writeRegNum=17}
+Controls: {memRead=1, memToReg=1, branch=0, regWrite=1, memWrite=0}
+MEM/WB Write: {LWDataValue=14, ALUResult=14, writeRegNum=17}
+Controls: {memToReg=1, regWrite=1}
+MEM/WB Read: {LWDataValue=4, ALUResult=104, writeRegNum=10}
+Controls: {memToReg=1, regWrite=1}
+
+IF/ID Write: {instruction=0, incrPC=7a024}
+IF/ID Read: {instruction=624022, incrPC=7a020}
+ID/EX Write: {writeReg_15_11=8, function=22, readReg2Value=102, readReg1Value=103, seOffset=4022, writeReg_20_16=2, incrPC=7a020}
+Controls: {regDst=1, regWrite=1, ALUSrc=0, ALUOp=2, memRead=0, branch=0, memToReg=0, memWrite=0}
+ID/EX Read: {writeReg_15_11=8, function=22, readReg2Value=102, readReg1Value=103, seOffset=4022, writeReg_20_16=2, incrPC=7a020}
+EX/MEM Write: {zero=0, SWValue=102, ALUResult=1, calcBTA=0, writeRegNum=8}
+Controls: {memRead=0, memToReg=0, branch=0, regWrite=1, memWrite=0}
+EX/MEM Read: {zero=0, SWValue=111, ALUResult=14, calcBTA=0, writeRegNum=17}
+Controls: {memRead=0, memToReg=0, branch=0, regWrite=1, memWrite=0}
+MEM/WB Write: {LWDataValue=14, ALUResult=14, writeRegNum=17}
+Controls: {memToReg=1, regWrite=1}
+MEM/WB Read: {LWDataValue=4, ALUResult=104, writeRegNum=10}
+Controls: {memToReg=1, regWrite=1}
+
+IF/ID Write: {instruction=0, incrPC=7a028}
+IF/ID Read: {instruction=0, incrPC=7a024}
+ID/EX Write: {writeReg_15_11=0, function=0, readReg2Value=0, readReg1Value=0, seOffset=0, writeReg_20_16=0, incrPC=7a024}
+Controls: {regDst=-1, regWrite=-1, ALUSrc=-1, ALUOp=-1, memRead=-1, branch=-1, memToReg=-1, memWrite=-1}
+ID/EX Read: {writeReg_15_11=8, function=22, readReg2Value=102, readReg1Value=103, seOffset=4022, writeReg_20_16=2, incrPC=7a020}
+EX/MEM Write: {zero=0, SWValue=102, ALUResult=1, calcBTA=0, writeRegNum=8}
+Controls: {memRead=0, memToReg=0, branch=0, regWrite=1, memWrite=0}
+EX/MEM Read: {zero=0, SWValue=111, ALUResult=14, calcBTA=0, writeRegNum=17}
+Controls: {memRead=0, memToReg=0, branch=0, regWrite=1, memWrite=0}
+MEM/WB Write: {LWDataValue=14, ALUResult=14, writeRegNum=17}
+Controls: {memToReg=1, regWrite=1}
+MEM/WB Read: {LWDataValue=4, ALUResult=104, writeRegNum=10}
+Controls: {memToReg=1, regWrite=1}
+
+IF/ID Write: {instruction=0, incrPC=7a028}
+IF/ID Read: {instruction=0, incrPC=7a024}
+ID/EX Write: {writeReg_15_11=0, function=0, readReg2Value=0, readReg1Value=0, seOffset=0, writeReg_20_16=0, incrPC=7a024}
+Controls: {regDst=-1, regWrite=-1, ALUSrc=-1, ALUOp=-1, memRead=-1, branch=-1, memToReg=-1, memWrite=-1}
+ID/EX Read: {writeReg_15_11=8, function=22, readReg2Value=102, readReg1Value=103, seOffset=4022, writeReg_20_16=2, incrPC=7a020}
+EX/MEM Write: {zero=0, SWValue=102, ALUResult=1, calcBTA=0, writeRegNum=8}
+Controls: {memRead=0, memToReg=0, branch=0, regWrite=1, memWrite=0}
+EX/MEM Read: {zero=0, SWValue=111, ALUResult=14, calcBTA=0, writeRegNum=17}
+Controls: {memRead=0, memToReg=0, branch=0, regWrite=1, memWrite=0}
+MEM/WB Write: {LWDataValue=14, ALUResult=14, writeRegNum=17}
+Controls: {memToReg=1, regWrite=1}
+MEM/WB Read: {LWDataValue=14, ALUResult=14, writeRegNum=17}
+Controls: {memToReg=1, regWrite=1}
+
+IF/ID Write: {instruction=0, incrPC=7a028}
+IF/ID Read: {instruction=0, incrPC=7a024}
+ID/EX Write: {writeReg_15_11=0, function=0, readReg2Value=0, readReg1Value=0, seOffset=0, writeReg_20_16=0, incrPC=7a024}
+Controls: {regDst=-1, regWrite=-1, ALUSrc=-1, ALUOp=-1, memRead=-1, branch=-1, memToReg=-1, memWrite=-1}
+ID/EX Read: {writeReg_15_11=8, function=22, readReg2Value=102, readReg1Value=103, seOffset=4022, writeReg_20_16=2, incrPC=7a020}
+EX/MEM Write: {zero=0, SWValue=102, ALUResult=1, calcBTA=0, writeRegNum=8}
+Controls: {memRead=0, memToReg=0, branch=0, regWrite=1, memWrite=0}
+EX/MEM Read: {zero=0, SWValue=102, ALUResult=1, calcBTA=0, writeRegNum=8}
+Controls: {memRead=0, memToReg=0, branch=0, regWrite=1, memWrite=0}
+MEM/WB Write: {LWDataValue=14, ALUResult=1, writeRegNum=8}
+Controls: {memToReg=0, regWrite=1}
+MEM/WB Read: {LWDataValue=14, ALUResult=14, writeRegNum=17}
+Controls: {memToReg=0, regWrite=1}
+
+IF/ID Write: {instruction=0, incrPC=7a028}
+IF/ID Read: {instruction=0, incrPC=7a024}
+ID/EX Write: {writeReg_15_11=0, function=0, readReg2Value=0, readReg1Value=0, seOffset=0, writeReg_20_16=0, incrPC=7a024}
+Controls: {regDst=-1, regWrite=-1, ALUSrc=-1, ALUOp=-1, memRead=-1, branch=-1, memToReg=-1, memWrite=-1}
+ID/EX Read: {writeReg_15_11=0, function=0, readReg2Value=0, readReg1Value=0, seOffset=0, writeReg_20_16=0, incrPC=7a024}
+EX/MEM Write: {zero=1, SWValue=0, ALUResult=0, calcBTA=0, writeRegNum=0}
+Controls: {memRead=-1, memToReg=-1, branch=-1, regWrite=-1, memWrite=-1}
+EX/MEM Read: {zero=0, SWValue=102, ALUResult=1, calcBTA=0, writeRegNum=8}
+Controls: {memRead=-1, memToReg=-1, branch=-1, regWrite=-1, memWrite=-1}
+MEM/WB Write: {LWDataValue=14, ALUResult=1, writeRegNum=8}
+Controls: {memToReg=0, regWrite=1}
+MEM/WB Read: {LWDataValue=14, ALUResult=14, writeRegNum=17}
+Controls: {memToReg=0, regWrite=1}
+
+IF/ID Write: {instruction=0, incrPC=7a02c}
+IF/ID Read: {instruction=0, incrPC=7a028}
+ID/EX Write: {writeReg_15_11=0, function=0, readReg2Value=0, readReg1Value=0, seOffset=0, writeReg_20_16=0, incrPC=7a028}
+Controls: {regDst=-1, regWrite=-1, ALUSrc=-1, ALUOp=-1, memRead=-1, branch=-1, memToReg=-1, memWrite=-1}
+ID/EX Read: {writeReg_15_11=0, function=0, readReg2Value=0, readReg1Value=0, seOffset=0, writeReg_20_16=0, incrPC=7a024}
+EX/MEM Write: {zero=1, SWValue=0, ALUResult=0, calcBTA=0, writeRegNum=0}
+Controls: {memRead=-1, memToReg=-1, branch=-1, regWrite=-1, memWrite=-1}
+EX/MEM Read: {zero=0, SWValue=102, ALUResult=1, calcBTA=0, writeRegNum=8}
+Controls: {memRead=-1, memToReg=-1, branch=-1, regWrite=-1, memWrite=-1}
+MEM/WB Write: {LWDataValue=14, ALUResult=1, writeRegNum=8}
+Controls: {memToReg=0, regWrite=1}
+MEM/WB Read: {LWDataValue=14, ALUResult=14, writeRegNum=17}
+Controls: {memToReg=0, regWrite=1}
+
+IF/ID Write: {instruction=0, incrPC=7a02c}
+IF/ID Read: {instruction=0, incrPC=7a028}
+ID/EX Write: {writeReg_15_11=0, function=0, readReg2Value=0, readReg1Value=0, seOffset=0, writeReg_20_16=0, incrPC=7a028}
+Controls: {regDst=-1, regWrite=-1, ALUSrc=-1, ALUOp=-1, memRead=-1, branch=-1, memToReg=-1, memWrite=-1}
+ID/EX Read: {writeReg_15_11=0, function=0, readReg2Value=0, readReg1Value=0, seOffset=0, writeReg_20_16=0, incrPC=7a024}
+EX/MEM Write: {zero=1, SWValue=0, ALUResult=0, calcBTA=0, writeRegNum=0}
+Controls: {memRead=-1, memToReg=-1, branch=-1, regWrite=-1, memWrite=-1}
+EX/MEM Read: {zero=0, SWValue=102, ALUResult=1, calcBTA=0, writeRegNum=8}
+Controls: {memRead=-1, memToReg=-1, branch=-1, regWrite=-1, memWrite=-1}
+MEM/WB Write: {LWDataValue=14, ALUResult=1, writeRegNum=8}
+Controls: {memToReg=0, regWrite=1}
+MEM/WB Read: {LWDataValue=14, ALUResult=1, writeRegNum=8}
+Controls: {memToReg=0, regWrite=1}
+
+IF/ID Write: {instruction=0, incrPC=7a02c}
+IF/ID Read: {instruction=0, incrPC=7a028}
+ID/EX Write: {writeReg_15_11=0, function=0, readReg2Value=0, readReg1Value=0, seOffset=0, writeReg_20_16=0, incrPC=7a028}
+Controls: {regDst=-1, regWrite=-1, ALUSrc=-1, ALUOp=-1, memRead=-1, branch=-1, memToReg=-1, memWrite=-1}
+ID/EX Read: {writeReg_15_11=0, function=0, readReg2Value=0, readReg1Value=0, seOffset=0, writeReg_20_16=0, incrPC=7a024}
+EX/MEM Write: {zero=1, SWValue=0, ALUResult=0, calcBTA=0, writeRegNum=0}
+Controls: {memRead=-1, memToReg=-1, branch=-1, regWrite=-1, memWrite=-1}
+EX/MEM Read: {zero=1, SWValue=0, ALUResult=0, calcBTA=0, writeRegNum=0}
+Controls: {memRead=-1, memToReg=-1, branch=-1, regWrite=-1, memWrite=-1}
+MEM/WB Write: {LWDataValue=14, ALUResult=0, writeRegNum=0}
+Controls: {memToReg=-1, regWrite=-1}
+MEM/WB Read: {LWDataValue=14, ALUResult=1, writeRegNum=8}
+Controls: {memToReg=-1, regWrite=-1}
+
+IF/ID Write: {instruction=0, incrPC=7a02c}
+IF/ID Read: {instruction=0, incrPC=7a028}
+ID/EX Write: {writeReg_15_11=0, function=0, readReg2Value=0, readReg1Value=0, seOffset=0, writeReg_20_16=0, incrPC=7a028}
+Controls: {regDst=-1, regWrite=-1, ALUSrc=-1, ALUOp=-1, memRead=-1, branch=-1, memToReg=-1, memWrite=-1}
+ID/EX Read: {writeReg_15_11=0, function=0, readReg2Value=0, readReg1Value=0, seOffset=0, writeReg_20_16=0, incrPC=7a028}
+EX/MEM Write: {zero=1, SWValue=0, ALUResult=0, calcBTA=0, writeRegNum=0}
+Controls: {memRead=-1, memToReg=-1, branch=-1, regWrite=-1, memWrite=-1}
+EX/MEM Read: {zero=1, SWValue=0, ALUResult=0, calcBTA=0, writeRegNum=0}
+Controls: {memRead=-1, memToReg=-1, branch=-1, regWrite=-1, memWrite=-1}
+MEM/WB Write: {LWDataValue=14, ALUResult=0, writeRegNum=0}
+Controls: {memToReg=-1, regWrite=-1}
+MEM/WB Read: {LWDataValue=14, ALUResult=1, writeRegNum=8}
+Controls: {memToReg=-1, regWrite=-1}
+
+IF/ID Write: {instruction=0, incrPC=7a030}
+IF/ID Read: {instruction=0, incrPC=7a02c}
+ID/EX Write: {writeReg_15_11=0, function=0, readReg2Value=0, readReg1Value=0, seOffset=0, writeReg_20_16=0, incrPC=7a02c}
+Controls: {regDst=-1, regWrite=-1, ALUSrc=-1, ALUOp=-1, memRead=-1, branch=-1, memToReg=-1, memWrite=-1}
+ID/EX Read: {writeReg_15_11=0, function=0, readReg2Value=0, readReg1Value=0, seOffset=0, writeReg_20_16=0, incrPC=7a028}
+EX/MEM Write: {zero=1, SWValue=0, ALUResult=0, calcBTA=0, writeRegNum=0}
+Controls: {memRead=-1, memToReg=-1, branch=-1, regWrite=-1, memWrite=-1}
+EX/MEM Read: {zero=1, SWValue=0, ALUResult=0, calcBTA=0, writeRegNum=0}
+Controls: {memRead=-1, memToReg=-1, branch=-1, regWrite=-1, memWrite=-1}
+MEM/WB Write: {LWDataValue=14, ALUResult=0, writeRegNum=0}
+Controls: {memToReg=-1, regWrite=-1}
+MEM/WB Read: {LWDataValue=14, ALUResult=1, writeRegNum=8}
+Controls: {memToReg=-1, regWrite=-1}
