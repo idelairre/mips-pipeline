@@ -22,13 +22,13 @@ class PipelineEvent extends EventObject {
     if (!Pipeline.finished) {
       new Thread(new Runnable() {
         public void run() {
-          if (_stage.equals("IF_stage:finished") && !_pipeline.IDStageRunning) {
+          if (_stage.equals("IF_stage:finished")) {
             _pipeline.ID_stage();
-          } else if (_stage.equals("ID_stage:finished") && !_pipeline.EXStageRunning) {
+          } else if (_stage.equals("ID_stage:finished")) {
             _pipeline.EX_stage();
-          } else if (_stage.equals("EX_stage:finished") && !_pipeline.MEMStageRunning) {
+          } else if (_stage.equals("EX_stage:finished")) {
             _pipeline.MEM_stage();
-          } else if (_stage.equals("MEM_stage:finished") && !_pipeline.WBStageRunning) {
+          } else if (_stage.equals("MEM_stage:finished")) {
             _pipeline.WB_stage();
           } else if (_stage.equals("WB_stage:finished")) {
             _pipeline.copyWriteToRead();
@@ -38,19 +38,11 @@ class PipelineEvent extends EventObject {
 
       new Thread(new Runnable() {
         public void run() {
-          if (_stage.equals("ID_stage:started") && !_pipeline.IFStageRunning) {
+          if (_stage.equals("ID_stage:started")) {
             _pipeline.IF_stage();
           }
-          // else if (_stage.equals("EX_stage:started") && !_pipeline.IDStageRunning) {
-          //   _pipeline.ID_stage();
-          // } else if (_stage.equals("MEM_stage:started") && !_pipeline.EXStageRunning) {
-          //   _pipeline.EX_stage();
-          // } else if (_stage.equals("WB_stage:started") && !_pipeline.MEMStageRunning) {
-          //   _pipeline.MEM_stage();
-          // }
         }
       }).start();
-      _pipeline.printEverything();
     }
   }
 
@@ -148,10 +140,16 @@ class Pipeline {
   }
 
   public synchronized Pipeline IF_stage() {
+    while(this.IFStageRunning) {
+      try {
+          wait();
+      } catch (InterruptedException e) {}
+    }
 
     this.IFStageRunning = true;
 
     if (Global.instructions.get(Global.pc) != null) {
+      // System.out.println(Disassembler.decode(Global.instructions.get(Global.pc)));
       IFID.write.put("instruction", Global.instructions.get(Global.pc));
       IFID.write.put("incrPC", Global.pc + 4);
       Global.pc += 4;
@@ -166,6 +164,12 @@ class Pipeline {
   }
 
   public synchronized Pipeline ID_stage() {
+
+    while(this.IDStageRunning) {
+      try {
+          wait();
+      } catch (InterruptedException e) {}
+    }
 
     this.IDStageRunning = true;
 
@@ -229,6 +233,12 @@ class Pipeline {
     // and either Read data 2 or a sign-extended immediate
     // for the ALU
 
+    while(this.EXStageRunning) {
+      try {
+          wait();
+      } catch (InterruptedException e) {}
+    }
+
     this.EXStageRunning = true;
 
     IDEX.read.putAll(IDEX.write);
@@ -277,6 +287,12 @@ class Pipeline {
 
   public synchronized Pipeline MEM_stage() {
 
+    while(this.MEMStageRunning) {
+      try {
+          wait();
+      } catch (InterruptedException e) {}
+    }
+
     this.MEMStageRunning = true;
 
     EXMEM.read.putAll(EXMEM.write);
@@ -314,6 +330,11 @@ class Pipeline {
   public synchronized Pipeline WB_stage() {
     // places the ALU result back into the register file in the middle of the datapath
     // OR, read the data from the mem/wb pipeline register and writing it into the register file
+    while(this.WBStageRunning) {
+      try {
+          wait();
+      } catch (InterruptedException e) {}
+    }
 
     this.WBStageRunning = true;
 
@@ -394,16 +415,5 @@ class Pipeline {
     pipeline.listeners.add(listener);
 
     pipeline.run();
-
-
-    // while (Global.instructions.get(Global.pc) != null) {
-    //   if (!Pipeline.finished) {
-    //     new Thread(new Runnable() {
-    //       public void run() {
-    //         pipeline.run();
-    //       }
-    //     }).start();
-    //   }
-    // }
   }
 }
