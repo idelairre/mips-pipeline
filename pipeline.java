@@ -1,11 +1,76 @@
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.LinkedHashMap;
 import java.lang.Thread;
 import java.lang.Runnable;
+import java.util.EventObject;
+import java.util.EventListener;
+
+class PipelineEvent extends EventObject {
+  private String stage;
+  public PipelineEvent(Pipeline pipeline, String stage) {
+    super(pipeline);
+    final Pipeline _pipeline = pipeline;
+    final String _stage = stage;
+
+    if (!Pipeline.finished) {
+      new Thread(new Runnable() {
+        public void run() {
+          if (_stage.equals("IF_stage:finished") && !_pipeline.IDStageRunning) {
+            _pipeline.ID_stage();
+          } else if (_stage.equals("ID_stage:finished") && !_pipeline.EXStageRunning) {
+            _pipeline.EX_stage();
+          } else if (_stage.equals("EX_stage:finished") && !_pipeline.MEMStageRunning) {
+            _pipeline.MEM_stage();
+          } else if (_stage.equals("MEM_stage:finished") && !_pipeline.WBStageRunning) {
+            _pipeline.WB_stage();
+          } else if (_stage.equals("WB_stage:finished")) {
+            _pipeline.copyWriteToRead();
+          }
+        }
+      }).start();
+
+      new Thread(new Runnable() {
+        public void run() {
+          if (_stage.equals("ID_stage:started") && !_pipeline.IFStageRunning) {
+            _pipeline.IF_stage();
+          }
+          // else if (_stage.equals("EX_stage:started") && !_pipeline.IDStageRunning) {
+          //   _pipeline.ID_stage();
+          // } else if (_stage.equals("MEM_stage:started") && !_pipeline.EXStageRunning) {
+          //   _pipeline.EX_stage();
+          // } else if (_stage.equals("WB_stage:started") && !_pipeline.MEMStageRunning) {
+          //   _pipeline.MEM_stage();
+          // }
+        }
+      }).start();
+      _pipeline.printEverything();
+    }
+  }
+
+  public String stageEvent() {
+    return stage;
+  }
+}
+
+interface PipelineEventsListener extends EventListener {
+  public void stageEvent(PipelineEvent pipelineEvent);
+}
+
+class PipelineEventsListenerInstance implements PipelineEventsListener {
+  String stage;
+
+  @Override
+  public void stageEvent(PipelineEvent pipelineEvent) {
+    pipelineEvent.stageEvent();
+  }
+}
 
 class Global {
   public static int pc = 0x7A000;
@@ -13,7 +78,7 @@ class Global {
   public static int[] Regs = new int[32];
   public static final Map<Integer, Integer> instructions;
 
-  public static boolean test = true;
+  public static boolean test = false;
 
   static {
     Map<Integer, Integer> tempMap = new LinkedHashMap<Integer, Integer>();
@@ -23,12 +88,6 @@ class Global {
       tempMap.put(0x7A008, 0xad09fffc);
       tempMap.put(0x7A00C, 0x00625022);
       tempMap.put(0x7A010, 0x10c8fffb);
-      // tempMap.put(0x7A014, 0x00000000);
-      // tempMap.put(0x7A018, 0x00000000);
-      // tempMap.put(0x7A01C, 0x00000000);
-      // tempMap.put(0x7A020, 0x00000000);
-      // tempMap.put(0x7A024, 0x00000000);
-      // tempMap.put(0x7A028, 0x00000000);
     } else {
       tempMap.put(0x7A000, 0xa1020000);
       tempMap.put(0x7A004, 0x810AFFFC);
@@ -72,19 +131,47 @@ class Global {
 
 class Pipeline {
   private int signExtend;
+  public static boolean running = false;
+  public static boolean finished = false;
+  public boolean IFStageRunning = false;
+  public boolean IDStageRunning = false;
+  public boolean EXStageRunning = false;
+  public boolean MEMStageRunning = false;
+  public boolean WBStageRunning = false;
 
-  public Pipeline IF_stage() {
-    IFID.write.put("instruction", Global.instructions.get(Global.pc));
-    IFID.write.put("incrPC", Global.pc + 4);
-    Global.pc += 4;
+  public Set<PipelineEventsListener> listeners = new HashSet<PipelineEventsListener>();
+
+  public void trigger(String stage) {
+    for (PipelineEventsListener pipelineListener: listeners) {
+     pipelineListener.stageEvent(new PipelineEvent(this, stage));
+   }
+  }
+
+  public synchronized Pipeline IF_stage() {
+
+    this.IFStageRunning = true;
+
+    if (Global.instructions.get(Global.pc) != null) {
+      IFID.write.put("instruction", Global.instructions.get(Global.pc));
+      IFID.write.put("incrPC", Global.pc + 4);
+      Global.pc += 4;
+      this.IFStageRunning = false;
+      this.trigger("IF_stage:finished");
+    } else {
+      Pipeline.finished = true;
+      this.IFStageRunning = false;
+    }
+
     return this;
   }
 
-  public Pipeline ID_stage() {
+  public synchronized Pipeline ID_stage() {
 
-    this.printEverything();
+    this.IDStageRunning = true;
 
     IFID.read.putAll(IFID.write);
+
+    this.trigger("ID_stage:started");
 
     int instruction = IFID.read.get("instruction");
 
@@ -129,22 +216,24 @@ class Pipeline {
       put("regWrite", Control.get("regWrite"));
     }};
 
-    if (Global.instructions.get(Global.pc) != null) {
-      this.IF_stage();
-    }
+    this.IDStageRunning = false;
+
+    this.trigger("ID_stage:finished");
 
     return this;
   }
 
-  public Pipeline EX_stage() {
+  public synchronized Pipeline EX_stage() {
     // the signals to be set are RegDst, ALUOP, and ALUSrc.
     // The signals select the Result register, the ALU operation
     // and either Read data 2 or a sign-extended immediate
     // for the ALU
 
-    this.printEverything();
+    this.EXStageRunning = true;
 
     IDEX.read.putAll(IDEX.write);
+
+    this.trigger("EX_stage:started");
 
     ALU.bits5to0 = IDEX.read.get("function");
     ALU.bits15to0 = IDEX.read.get("seOffset");
@@ -179,15 +268,20 @@ class Pipeline {
     EXMEM.WB = new HashMap<String, Integer>(IDEX.WB);
     EXMEM.M = new HashMap<String, Integer>(IDEX.M);
 
-    this.ID_stage();
+    this.EXStageRunning = false;
+
+    this.trigger("EX_stage:finished");
 
     return this;
   }
 
-  public Pipeline MEM_stage() {
-    this.printEverything();
+  public synchronized Pipeline MEM_stage() {
+
+    this.MEMStageRunning = true;
 
     EXMEM.read.putAll(EXMEM.write);
+
+    this.trigger("MEM_stage:started");
 
     MEMWB.WB = new HashMap<String, Integer>(EXMEM.WB);
 
@@ -210,18 +304,22 @@ class Pipeline {
       }
     }
 
-    this.EX_stage();
+    this.MEMStageRunning = false;
+
+    this.trigger("MEM_stage:finished");
 
     return this;
   }
 
-  public Pipeline WB_stage() {
+  public synchronized Pipeline WB_stage() {
     // places the ALU result back into the register file in the middle of the datapath
     // OR, read the data from the mem/wb pipeline register and writing it into the register file
 
-    this.printEverything();
+    this.WBStageRunning = true;
 
     MEMWB.read.putAll(MEMWB.write);
+
+    this.trigger("WB_stage:started");
 
     if (MEMWB.WB.get("regWrite") == 1) {
       if (MEMWB.WB.get("memToReg") == 0) {
@@ -246,24 +344,28 @@ class Pipeline {
       }
     }
 
-    this.MEM_stage();
+    this.WBStageRunning = false;
+
+    this.trigger("WB_stage:finished");
 
     return this;
   }
 
-  public Pipeline copyWriteToRead() {
-    this.WB_stage();
-
+  public synchronized Pipeline copyWriteToRead() {
     // not sure what is supposed to go here
+    Pipeline.running = false;
+
+    this.printEverything();
 
     return this;
   }
 
   public void run() {
-    IF_stage().ID_stage().EX_stage().MEM_stage().WB_stage().copyWriteToRead();
+    Pipeline.running = true;
+    IF_stage();
   }
 
-  public Pipeline printEverything() {
+  public synchronized Pipeline printEverything() {
     // System.out.println("\n" + Disassembler.decode(Global.instructions.get(Global.pc)));
     System.out.println("\nIF/ID Write: " + RegisterService.toString(IFID.write));
     System.out.println("IF/ID Read: " + RegisterService.toString(IFID.read));
@@ -278,14 +380,30 @@ class Pipeline {
     System.out.println("Controls: " + MEMWB.controls());
     System.out.println("MEM/WB Read: " + RegisterService.toString(MEMWB.read));
     System.out.println("Controls: " + MEMWB.controls());
+
+    System.out.println(Arrays.toString(Global.Regs));
+    System.out.println(Arrays.toString(Global.Main_Memory));
+
     return this;
   }
 
   public static void main(String[] args) {
-    Pipeline pipeline = new Pipeline();
-    while (Global.instructions.get(Global.pc) != null) {
-      pipeline.run();
-    }
-    pipeline.printEverything();
+    final Pipeline pipeline = new Pipeline();
+
+    PipelineEventsListener listener = new PipelineEventsListenerInstance();
+    pipeline.listeners.add(listener);
+
+    pipeline.run();
+
+
+    // while (Global.instructions.get(Global.pc) != null) {
+    //   if (!Pipeline.finished) {
+    //     new Thread(new Runnable() {
+    //       public void run() {
+    //         pipeline.run();
+    //       }
+    //     }).start();
+    //   }
+    // }
   }
 }

@@ -5,10 +5,6 @@ class MEMWB {
   public static Map<String, Integer> write;
   public static Map<String, Integer> read;
   public static Map<String, Integer> WB = new HashMap<String, Integer>();
-  // {{
-  //   put("memToReg", 0);
-  //   put("regWrite", 0);
-  // }};
   static {
     Map<String, Integer> tempMap = new HashMap<String, Integer>();
     tempMap.put("LWDataValue", 0);
