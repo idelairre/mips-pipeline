@@ -5,6 +5,7 @@ class MEMWB {
   public static Map<String, Integer> write;
   public static Map<String, Integer> read;
   public static Map<String, Integer> WB = new HashMap<String, Integer>();
+  public static Object lock = new Object();
   static {
     Map<String, Integer> tempMap = new HashMap<String, Integer>();
     tempMap.put("LWDataValue", 0);

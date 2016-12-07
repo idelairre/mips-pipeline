@@ -1,5 +1,6 @@
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.concurrent.Executor;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -7,59 +8,59 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.LinkedHashMap;
-import java.lang.Thread;
-import java.lang.Runnable;
 import java.util.EventObject;
 import java.util.EventListener;
+import java.lang.Thread;
+import java.lang.Runnable;
+import java.lang.reflect.Method;
+import java.lang.reflect.InvocationTargetException;
+
+class ThreadPerTaskExecutor implements Executor {
+  public void execute(Runnable r) {
+    new Thread(r).start();
+  }
+}
 
 class PipelineEvent extends EventObject {
   private String stage;
+  final private Executor executor = new ThreadPerTaskExecutor();
+
   public PipelineEvent(Pipeline pipeline, String stage) {
     super(pipeline);
-    final Pipeline _pipeline = pipeline;
-    final String _stage = stage;
+    if (stage.equals("IF_stage:finished")) {
+      executor.execute(pipeline.createRunnable("ID_stage"));
+    } else if (stage.equals("ID_stage:finished")) {
+      executor.execute(pipeline.createRunnable("EX_stage"));
+    } else if (stage.equals("EX_stage:finished")) {
+      executor.execute(pipeline.createRunnable("MEM_stage"));
+    } else if (stage.equals("MEM_stage:finished")) {
+      executor.execute(pipeline.createRunnable("WB_stage"));
+    } else if (stage.equals("WB_stage:finished")) {
+      executor.execute(pipeline.createRunnable("copyWriteToRead"));
+      // _pipeline.printEverything();
+    }
 
-    new Thread(new Runnable() {
-      public void run() {
-        if (_stage.equals("IF_stage:finished")) {
-          _pipeline.ID_stage();
-        } else if (_stage.equals("ID_stage:finished")) {
-          _pipeline.EX_stage();
-        } else if (_stage.equals("EX_stage:finished")) {
-          _pipeline.MEM_stage();
-        } else if (_stage.equals("MEM_stage:finished")) {
-          _pipeline.WB_stage();
-        } else if (_stage.equals("WB_stage:finished")) {
-          _pipeline.copyWriteToRead();
-        }
+    if (!Pipeline.finished) {
+      if (stage.equals("ID_stage:started")) {
+        executor.execute(pipeline.createRunnable("IF_stage"));
       }
-    }).start();
+    }
+    if (stage.equals("EX_stage:started")) {
+      executor.execute(pipeline.createRunnable("ID_stage"));
+    } else if (stage.equals("MEM_stage:started")) {
+      executor.execute(pipeline.createRunnable("EX_stage"));
+    } else if (stage.equals("WB_stage:started")) {
+      executor.execute(pipeline.createRunnable("MEM_stage"));
+    }
 
-    new Thread(new Runnable() {
-      public void run() {
-        if (!Pipeline.finished) {
-          if (_stage.equals("ID_stage:started")) {
-            _pipeline.IF_stage();
-          }
-        }
-        if (_stage.equals("EX_stage:started")) {
-          _pipeline.ID_stage();
-        } else if (_stage.equals("MEM_stage:started")) {
-          _pipeline.EX_stage();
-        } else if (_stage.equals("WB_stage:started")) {
-          _pipeline.MEM_stage();
-        }
-      }
-    }).start();
-    
     System.out.println("\n@" + stage);
-    System.out.println("IF Stage running: " + _pipeline.IFStageRunning);
-    System.out.println("ID Stage running: " + _pipeline.IDStageRunning);
-    System.out.println("EX Stage running: " + _pipeline.EXStageRunning);
-    System.out.println("MEM Stage running: " + _pipeline.MEMStageRunning);
-    System.out.println("WB Stage running: " + _pipeline.WBStageRunning);
+    System.out.println("IF Stage running: " + pipeline.IFStageRunning);
+    System.out.println("ID Stage running: " + pipeline.IDStageRunning);
+    System.out.println("EX Stage running: " + pipeline.EXStageRunning);
+    System.out.println("MEM Stage running: " + pipeline.MEMStageRunning);
+    System.out.println("WB Stage running: " + pipeline.WBStageRunning);
     System.out.println("Finished? " + Pipeline.finished);
-    _pipeline.printEverything();
+    pipeline.printEverything();
   }
 
   public String stageEvent() {
@@ -153,14 +154,32 @@ class Pipeline {
   public void trigger(String stage) {
     for (PipelineEventsListener pipelineListener: listeners) {
      pipelineListener.stageEvent(new PipelineEvent(this, stage));
-   }
+    }
+  }
+
+  public Runnable createRunnable(String methodName) {
+    Runnable runnable = null;
+    try {
+      final Method method = this.getClass().getMethod(methodName);
+      final Pipeline pipeline = this;
+      runnable = new Runnable() {
+        public void run() {
+          try {
+            method.invoke(pipeline);
+          } catch (IllegalAccessException e) {}
+            catch (InvocationTargetException e) {}
+        }
+      };
+    } catch (SecurityException e) {}
+      catch (NoSuchMethodException e) {}
+    return runnable;
   }
 
   public Pipeline IF_stage() {
-    synchronized(IFID.write) {
+    synchronized(IFID.lock) {
       while(this.IFStageRunning) {
         try {
-            IFID.write.wait();
+            IFID.lock.wait();
         } catch (InterruptedException e) {}
       }
 
@@ -173,25 +192,26 @@ class Pipeline {
         IFID.write.put("instruction", Global.instructions.get(Global.pc));
         IFID.write.put("incrPC", Global.pc + 4);
         Global.pc += 4;
-        if (Global.instructions.get(Global.pc) == null) {
-          Pipeline.lastInstruction = true;
-        }
+
+        this.IFStageRunning = false;
         this.trigger("IF_stage:finished");
       } else {
+        this.IFStageRunning = false;
         Pipeline.finished = true;
         this.trigger("COMPLETE");
       }
-      this.IFStageRunning = false;
+
+      IFID.lock.notify();
 
       return this;
     }
   }
 
   public Pipeline ID_stage() {
-    synchronized(IFID.write) {
+    synchronized(IFID.lock) {
       while(this.IDStageRunning) {
         try {
-            IFID.write.wait();
+            IFID.lock.wait();
         } catch (InterruptedException e) {}
       }
 
@@ -251,6 +271,9 @@ class Pipeline {
       } else {
         this.IDStageRunning = false;
       }
+
+      IFID.lock.notify();
+
       return this;
     }
   }
@@ -260,10 +283,10 @@ class Pipeline {
     // The signals select the Result register, the ALU operation
     // and either Read data 2 or a sign-extended immediate
     // for the ALU
-    synchronized(IDEX.write) {
+    synchronized(IDEX.lock) {
       while(this.EXStageRunning) {
         try {
-            EXMEM.write.wait();
+            EXMEM.lock.wait();
         } catch (InterruptedException e) {}
       }
 
@@ -314,15 +337,17 @@ class Pipeline {
         this.EXStageRunning = false;
       }
 
+      IDEX.lock.notify();
+
       return this;
     }
   }
 
   public Pipeline MEM_stage() {
-    synchronized(EXMEM.write) {
+    synchronized(EXMEM.lock) {
       while(this.MEMStageRunning) {
         try {
-            MEMWB.write.wait();
+            EXMEM.lock.wait();
         } catch (InterruptedException e) {}
       }
 
@@ -362,6 +387,8 @@ class Pipeline {
         this.MEMStageRunning = false;
       }
 
+      EXMEM.lock.notify();
+
       return this;
     }
   }
@@ -369,10 +396,10 @@ class Pipeline {
   public Pipeline WB_stage() {
     // places the ALU result back into the register file in the middle of the datapath
     // OR, read the data from the mem/wb pipeline register and writing it into the register file
-    synchronized(MEMWB.write) {
+    synchronized(MEMWB.lock) {
       while(this.WBStageRunning) {
         try {
-            MEMWB.write.wait();
+            MEMWB.lock.wait();
         } catch (InterruptedException e) {}
       }
 
@@ -416,14 +443,14 @@ class Pipeline {
         this.WBStageRunning = false;
       }
 
+      MEMWB.lock.notify();
+
       return this;
     }
   }
 
   public synchronized Pipeline copyWriteToRead() {
     // not sure what is supposed to go here
-    Pipeline.running = false;
-
     return this;
   }
 
@@ -432,7 +459,7 @@ class Pipeline {
     IF_stage();
   }
 
-  public synchronized Pipeline printEverything() {
+  public Pipeline printEverything() {
     // System.out.println("\n" + Disassembler.decode(Global.instructions.get(Global.pc)));
     System.out.println("\nIF/ID Write: " + RegisterService.toString(IFID.write));
     System.out.println("IF/ID Read: " + RegisterService.toString(IFID.read));

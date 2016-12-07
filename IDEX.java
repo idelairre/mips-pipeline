@@ -7,6 +7,7 @@ class IDEX {
   public static Map<String, Integer> WB = new HashMap<String, Integer>();
   public static Map<String, Integer> M = new HashMap<String, Integer>();
   public static Map<String, Integer> EX = new HashMap<String, Integer>();
+  public static Object lock = new Object();
   private static Map<String, Integer> Controls;
 
   static {

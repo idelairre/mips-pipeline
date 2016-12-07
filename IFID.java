@@ -4,6 +4,7 @@ import java.util.Map;
 class IFID {
   public static Map<String, Integer> write;
   public static Map<String, Integer> read;
+  public static Object lock = new Object();
 
   static {
     Map<String, Integer> tempMap = new HashMap<String, Integer>();
