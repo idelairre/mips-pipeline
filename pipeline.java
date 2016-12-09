@@ -167,7 +167,7 @@ class Pipeline {
     MEMWB.write.put("writeRegNum", EXMEM.read.get("writeRegNum"));
     MEMWB.write.put("ALUResult", EXMEM.read.get("ALUResult"));
 
-    if (EXMEM.controls.get("read").get("memRead") == 1) {// if its a load than set the lw data value
+    if (EXMEM.controls.get("read").get("memRead") == 1) { // if its a load than set the lw data value
       if (Global.test) {
         System.out.println("LWDataValue = mem contents @ " + Integer.toHexString(EXMEM.read.get("ALUResult")));
       } else {
@@ -237,31 +237,33 @@ class Pipeline {
 
   public Pipeline Print_out_everything() {
     // System.out.println("\n" + Disassembler.decode(Global.instructions.get(Global.pc)));
-    System.out.println("\nIF/ID Write");
-    System.out.println(RegisterService.toString(IFID.write));
-    System.out.println("IF/ID Read");
-    System.out.println(RegisterService.toString(IFID.read));
-    System.out.println("ID/EX Write");
-    System.out.println("Controls: " + IDEX.controls.get("write"));
-    System.out.println(RegisterService.toString(IDEX.write));
-    System.out.println("ID/EX Read");
-    System.out.println("Controls: " + IDEX.controls.get("read"));
-    System.out.println(RegisterService.toString(IDEX.read));
-    System.out.println("Controls: " + IDEX.controls.get("write"));
-    System.out.println("EX/MEM Write");
-    System.out.println(RegisterService.toString(EXMEM.write));
-    System.out.println("EX/MEM Read");
-    System.out.println("Controls: " + EXMEM.controls.get("read"));
-    System.out.println(RegisterService.toString(EXMEM.read));
-    System.out.println("MEM/WB Write");
-    System.out.println("Controls: " + MEMWB.controls.get("write"));
-    System.out.println(RegisterService.toString(MEMWB.write));
-    System.out.println("MEM/WB Read");
-    System.out.println("Controls: " + MEMWB.controls.get("read"));
-    System.out.println(RegisterService.toString(MEMWB.read));
+    if (!Global.test) {
+      System.out.println("\nIF/ID Write");
+      System.out.println(RegisterService.toString(IFID.write));
+      System.out.println("IF/ID Read");
+      System.out.println(RegisterService.toString(IFID.read));
+      System.out.println("ID/EX Write");
+      System.out.println("Controls: " + IDEX.controls.get("write"));
+      System.out.println(RegisterService.toString(IDEX.write));
+      System.out.println("ID/EX Read");
+      System.out.println("Controls: " + IDEX.controls.get("read"));
+      System.out.println(RegisterService.toString(IDEX.read));
+      System.out.println("Controls: " + IDEX.controls.get("write"));
+      System.out.println("EX/MEM Write");
+      System.out.println(RegisterService.toString(EXMEM.write));
+      System.out.println("EX/MEM Read");
+      System.out.println("Controls: " + EXMEM.controls.get("read"));
+      System.out.println(RegisterService.toString(EXMEM.read));
+      System.out.println("MEM/WB Write");
+      System.out.println("Controls: " + MEMWB.controls.get("write"));
+      System.out.println(RegisterService.toString(MEMWB.write));
+      System.out.println("MEM/WB Read");
+      System.out.println("Controls: " + MEMWB.controls.get("read"));
+      System.out.println(RegisterService.toString(MEMWB.read));
 
-    System.out.println(Arrays.toString(Global.Regs));
-    System.out.println(Arrays.toString(Global.Main_Memory));
+      System.out.println(Arrays.toString(Global.Regs));
+      System.out.println(Arrays.toString(Global.Main_Memory));
+    }
 
     return this;
   }

@@ -76,8 +76,8 @@ class Control {
   }
 
   private static void setSw() {
-    signals.put("regDst", -1);
-    signals.put("memToReg", -1);
+    signals.put("regDst", 0);
+    signals.put("memToReg", 0);
     signals.put("ALUSrc", 1);
     signals.put("regWrite", 0);
     signals.put("memRead", 0);
