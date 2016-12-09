@@ -13,9 +13,11 @@ class ALU {
     // extended 16 bit immediate field
     int result = 0;
 
-    if (Control.get("ALUOp") == 0) { // add
+
+
+    if (IDEX.controls.get("read").get("ALUOp") == 0) { // add
       result = operand1 + operand2;
-    } else if (Control.get("ALUOp") == 2) { // ALUOp == 10
+    } else if (IDEX.controls.get("read").get("ALUOp") == 2) { // ALUOp == 10
       result = performRType(operand1, operand2);
     }
     return result;

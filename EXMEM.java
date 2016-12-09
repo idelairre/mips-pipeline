@@ -4,17 +4,22 @@ import java.util.Map;
 class EXMEM {
   public static Map<String, Integer> write;
   public static Map<String, Integer> read;
-  public static Map<String, Integer> WB = new HashMap<String, Integer>();
-  //  {{
-  //   put("memToReg", 0);
-  //   put("regWrite", 0);
-  // }};
-  public static Map<String, Integer> M = new HashMap<String, Integer>();
-  // {{
-  //   put("memRead", 0);
-  //   put("memWrite", 0);
-  //   put("branch", 0);
-  // }};
+  public static Map<String, Map<String, Integer>> controls = new HashMap<String, Map<String, Integer>>() {{
+    put("write", new HashMap<String, Integer>() {{
+      put("memToReg", 0);
+      put("regWrite", 0);
+      put("memRead", 0);
+      put("memWrite", 0);
+      put("branch", 0);
+    }});
+    put("read", new HashMap<String, Integer>() {{
+      put("memToReg", 0);
+      put("regWrite", 0);
+      put("memRead", 0);
+      put("memWrite", 0);
+      put("branch", 0);
+    }});
+  }};
   private static Map<String, Integer> Controls;
 
   static {
@@ -29,8 +34,8 @@ class EXMEM {
 
   public static Map<String, Integer> controls() {
     Controls = new HashMap<String, Integer>();
-    Controls.putAll(WB);
-    Controls.putAll(M);
+    // Controls.putAll(WB);
+    // Controls.putAll(M);
     return Controls;
   }
 }

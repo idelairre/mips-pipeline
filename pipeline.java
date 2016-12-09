@@ -76,8 +76,6 @@ class Pipeline {
   }
 
   public Pipeline ID_stage() {
-    IFID.read.putAll(IFID.write);
-
     int instruction = IFID.read.get("instruction");
 
     IDEX.write.put("incrPC", IFID.read.get("incrPC"));
@@ -104,22 +102,16 @@ class Pipeline {
     IDEX.write.put("writeReg_15_11", Disassembler.bits15to11(instruction));
 
     // control signals
-    IDEX.EX = new HashMap<String, Integer>() {{
+    IDEX.controls.put("write", new HashMap<String, Integer>() {{
       put("regDst", Control.get("regDst"));
       put("ALUSrc", Control.get("ALUSrc"));
       put("ALUOp", Control.get("ALUOp"));
-    }};
-
-    IDEX.M = new HashMap<String, Integer>() {{
       put("memRead", Control.get("memRead"));
       put("memWrite", Control.get("memWrite"));
       put("branch", Control.get("branch"));
-    }};
-
-    IDEX.WB = new HashMap<String, Integer>() {{
       put("memToReg", Control.get("memToReg"));
       put("regWrite", Control.get("regWrite"));
-    }};
+    }});
 
     return this;
   }
@@ -130,15 +122,13 @@ class Pipeline {
     // and either Read data 2 or a sign-extended immediate
     // for the ALU
 
-    IDEX.read.putAll(IDEX.write);
-
     ALU.bits5to0 = IDEX.read.get("function");
     ALU.bits15to0 = IDEX.read.get("seOffset");
 
     int operand1 = IDEX.read.get("readReg1Value");
     int operand2;
 
-    if (IDEX.EX.get("ALUSrc") == 0) {
+    if (IDEX.controls.get("read").get("ALUSrc") == 0) {
       operand2 = IDEX.read.get("readReg2Value");
     } else {
       operand2 = IDEX.read.get("seOffset");
@@ -156,27 +146,28 @@ class Pipeline {
 
     EXMEM.write.put("SWValue", IDEX.read.get("readReg2Value"));
 
-    if (IDEX.EX.get("regDst") == 0) {
+    if (IDEX.controls.get("read").get("regDst") == 0) {
       EXMEM.write.put("writeRegNum", IDEX.read.get("writeReg_20_16"));
     } else {
       EXMEM.write.put("writeRegNum", IDEX.read.get("writeReg_15_11"));
     }
 
-    EXMEM.WB = new HashMap<String, Integer>(IDEX.WB);
-    EXMEM.M = new HashMap<String, Integer>(IDEX.M);
+    EXMEM.controls.put("write", new HashMap<String, Integer>() {{
+      put("memRead", IDEX.controls.get("read").get("memRead"));
+      put("memWrite", IDEX.controls.get("read").get("memWrite"));
+      put("branch", IDEX.controls.get("read").get("branch"));
+      put("memToReg", IDEX.controls.get("read").get("memToReg"));
+      put("regWrite", IDEX.controls.get("read").get("regWrite"));
+    }});
 
     return this;
   }
 
   public Pipeline MEM_stage() {
-    EXMEM.read.putAll(EXMEM.write);
-
-    MEMWB.WB = new HashMap<String, Integer>(EXMEM.WB);
-
     MEMWB.write.put("writeRegNum", EXMEM.read.get("writeRegNum"));
     MEMWB.write.put("ALUResult", EXMEM.read.get("ALUResult"));
 
-    if (EXMEM.M.get("memRead") == 1) {// if its a load than set the lw data value
+    if (EXMEM.controls.get("read").get("memRead") == 1) {// if its a load than set the lw data value
       if (Global.test) {
         System.out.println("LWDataValue = mem contents @ " + Integer.toHexString(EXMEM.read.get("ALUResult")));
       } else {
@@ -184,13 +175,18 @@ class Pipeline {
       }
     }
 
-    if (EXMEM.M.get("memWrite") == 1) {
+    if (EXMEM.controls.get("read").get("memWrite") == 1) {
       if (Global.test) {
         System.out.println("Value " + Integer.toHexString(EXMEM.read.get("SWValue")) + " written to memory address " + Integer.toHexString(EXMEM.read.get("ALUResult")));
       } else {
         Global.Main_Memory[EXMEM.read.get("ALUResult")] = EXMEM.read.get("SWValue");
       }
     }
+
+    MEMWB.controls.put("write", new HashMap<String, Integer>() {{
+      put("memToReg", EXMEM.controls.get("read").get("memToReg"));
+      put("regWrite", EXMEM.controls.get("read").get("regWrite"));
+    }});
 
     return this;
   }
@@ -199,10 +195,8 @@ class Pipeline {
     // places the ALU result back into the register file in the middle of the datapath
     // OR, read the data from the mem/wb pipeline register and writing it into the register file
 
-    MEMWB.read.putAll(MEMWB.write);
-
-    if (MEMWB.WB.get("regWrite") == 1) {
-      if (MEMWB.WB.get("memToReg") == 0) {
+    if (MEMWB.controls.get("read").get("regWrite") == 1) {
+      if (MEMWB.controls.get("read").get("memToReg") == 0) {
         // the value fed to the register Write data input
         // comes from the ALU
         if (Global.test) {
@@ -227,31 +221,44 @@ class Pipeline {
     return this;
   }
 
-  public Pipeline copyWriteToRead() {
-    // not sure what is supposed to go here
-
-    return this;
+  public void Copy_write_to_read() {
+    IFID.read.putAll(IFID.write);
+    IDEX.read.putAll(IDEX.write);
+    IDEX.controls.put("read", IDEX.controls.get("write"));
+    EXMEM.read.putAll(EXMEM.write);
+    EXMEM.controls.put("read", EXMEM.controls.get("write"));
+    MEMWB.read.putAll(MEMWB.write);
+    MEMWB.controls.put("read", MEMWB.controls.get("write"));
   }
 
   public void run() {
-    IF_stage().ID_stage().EX_stage().MEM_stage().WB_stage().printEverything().copyWriteToRead();
+    IF_stage().ID_stage().EX_stage().MEM_stage().WB_stage().Print_out_everything().Copy_write_to_read();
   }
 
-  public Pipeline printEverything() {
+  public Pipeline Print_out_everything() {
     // System.out.println("\n" + Disassembler.decode(Global.instructions.get(Global.pc)));
-    System.out.println("\nIF/ID Write: " + RegisterService.toString(IFID.write));
-    System.out.println("IF/ID Read: " + RegisterService.toString(IFID.read));
-    System.out.println("ID/EX Write: " + RegisterService.toString(IDEX.write));
-    System.out.println("Controls: " + Control.signals);
-    System.out.println("ID/EX Read: " + RegisterService.toString(IDEX.read));
-    System.out.println("EX/MEM Write: " + RegisterService.toString(EXMEM.write));
-    System.out.println("Controls: " + EXMEM.controls());
-    System.out.println("EX/MEM Read: " + RegisterService.toString(EXMEM.read));
-    System.out.println("Controls: " + EXMEM.controls());
-    System.out.println("MEM/WB Write: " + RegisterService.toString(MEMWB.write));
-    System.out.println("Controls: " + MEMWB.controls());
-    System.out.println("MEM/WB Read: " + RegisterService.toString(MEMWB.read));
-    System.out.println("Controls: " + MEMWB.controls());
+    System.out.println("\nIF/ID Write");
+    System.out.println(RegisterService.toString(IFID.write));
+    System.out.println("IF/ID Read");
+    System.out.println(RegisterService.toString(IFID.read));
+    System.out.println("ID/EX Write");
+    System.out.println("Controls: " + IDEX.controls.get("write"));
+    System.out.println(RegisterService.toString(IDEX.write));
+    System.out.println("ID/EX Read");
+    System.out.println("Controls: " + IDEX.controls.get("read"));
+    System.out.println(RegisterService.toString(IDEX.read));
+    System.out.println("Controls: " + IDEX.controls.get("write"));
+    System.out.println("EX/MEM Write");
+    System.out.println(RegisterService.toString(EXMEM.write));
+    System.out.println("EX/MEM Read");
+    System.out.println("Controls: " + EXMEM.controls.get("read"));
+    System.out.println(RegisterService.toString(EXMEM.read));
+    System.out.println("MEM/WB Write");
+    System.out.println("Controls: " + MEMWB.controls.get("write"));
+    System.out.println(RegisterService.toString(MEMWB.write));
+    System.out.println("MEM/WB Read");
+    System.out.println("Controls: " + MEMWB.controls.get("read"));
+    System.out.println(RegisterService.toString(MEMWB.read));
 
     System.out.println(Arrays.toString(Global.Regs));
     System.out.println(Arrays.toString(Global.Main_Memory));
