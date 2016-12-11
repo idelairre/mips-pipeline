@@ -167,19 +167,26 @@ class Pipeline {
     MEMWB.write.put("writeRegNum", EXMEM.read.get("writeRegNum"));
     MEMWB.write.put("ALUResult", EXMEM.read.get("ALUResult"));
 
+    DataMemory.address = EXMEM.read.get("ALUResult");
+
+    // data memory contents designated by the address input are
+    // put on the read data output
     if (EXMEM.controls.get("read").get("memRead") == 1) { // if its a load than set the lw data value
       if (Global.test) {
         System.out.println("LWDataValue = mem contents @ " + Integer.toHexString(EXMEM.read.get("ALUResult")));
       } else {
-        MEMWB.write.put("LWDataValue", Global.Main_Memory[EXMEM.read.get("ALUResult")]);
+        DataMemory.readData = Global.Main_Memory[DataMemory.address];
+        MEMWB.write.put("LWDataValue", DataMemory.readData);
       }
     }
 
+    // data memory contents designated by the address input are
+    // replaced by the value on the write data input
     if (EXMEM.controls.get("read").get("memWrite") == 1) {
       if (Global.test) {
         System.out.println("Value " + Integer.toHexString(EXMEM.read.get("SWValue")) + " written to memory address " + Integer.toHexString(EXMEM.read.get("ALUResult")));
       } else {
-        Global.Main_Memory[EXMEM.read.get("ALUResult")] = EXMEM.read.get("SWValue");
+        DataMemory.writeData = EXMEM.read.get("SWValue");
       }
     }
 
@@ -193,7 +200,7 @@ class Pipeline {
 
   public Pipeline WB_stage() {
     // places the ALU result back into the register file in the middle of the datapath
-    // OR, read the data from the mem/wb pipeline register and writing it into the register file
+    // OR, read the data from the mem/wb pipeline register and write it into the register file
 
     if (MEMWB.controls.get("read").get("regWrite") == 1) {
       if (MEMWB.controls.get("read").get("memToReg") == 0) {
@@ -209,12 +216,16 @@ class Pipeline {
         if (Global.test) {
           System.out.println("Writing whatever is stored at " + Integer.toHexString(MEMWB.read.get("ALUResult")) + " to register " + MEMWB.read.get("writeRegNum"));
         } else {
-          Registers.writeData = Global.Main_Memory[MEMWB.read.get("ALUResult")];
+          Registers.writeData = DataMemory.readData;
         }
       }
       // the register on the write register input is written with the value on the write data input
       if (!Global.test) {
         Global.Regs[MEMWB.read.get("writeRegNum")] = Registers.writeData;
+      }
+    } else {
+      if (!Global.test) {
+        Global.Main_Memory[DataMemory.address] = DataMemory.writeData;
       }
     }
 
@@ -250,6 +261,7 @@ class Pipeline {
       System.out.println(RegisterService.toString(IDEX.read));
       System.out.println("Controls: " + IDEX.controls.get("write"));
       System.out.println("EX/MEM Write");
+      System.out.println("Controls: " + EXMEM.controls.get("write"));
       System.out.println(RegisterService.toString(EXMEM.write));
       System.out.println("EX/MEM Read");
       System.out.println("Controls: " + EXMEM.controls.get("read"));
